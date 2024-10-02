@@ -48,6 +48,10 @@ To test locally, you will additionally need a **working implementation** of the 
 Place this in the same directory as `tester.py`. Then, to test project 1,
 
 ```sh
+python tester.py 1
+```
+
+```sh
 Running 6 tests...
 Running v1/tests/test_add1.br...  PASSED
 Running v1/tests/test_print_const.br...  PASSED
