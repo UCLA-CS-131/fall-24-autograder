@@ -14,7 +14,7 @@ This repository contains:
 
 This repository does not contain:
 
-- 80% of the test cases we evaluate your code on (until *after* the project is due)
+- 80% of the test cases we evaluate your code on
 - the plagiarism checker, which is closed-source
 - the Docker configuration for the deployment; this is managed by Gradescope.
 - canonical solutions for the past projects - those are in the [project template repo](https://github.com/UCLA-CS-131/fall-24-project-starter)
@@ -27,25 +27,16 @@ We've made a [separate repository for project template code](https://github.com/
 
 ### Setup
 
-This grader uses features of Python 3.11. So, **you must be running Python 3.11 locally**.
-
-Next, clone this repository and make it your working directory:
-
-```sh
-$ git clone
-# or, with SSH
-$ git clone git@github.com:UCLA-CS-131/fall-24-autograder.git
-...
-cd fall-24-autograder
-```
+1. **Make sure you're using Python 3.11**
+2. Clone this repo and navigate to its root directory
 
 Now, you're ready to test locally.
 
 ### Testing Locally
 
-To test locally, you will additionally need a **working implementation** of the project; the minimum example is an `interpreterv1.py`/`interpreterv2.py`/`interpreterv3.py` that implements the `Interpreter` class.
+To test locally, you will additionally need a **working implementation** of the project version you're trying to test (your interpreter file and any additional files that you created that it relies on)
 
-Place this in the same directory as `tester.py`. Then, to test project 1,
+Place this in the same directory as `tester.py`. Then, to test project 1 for example,
 
 ```sh
 python tester.py 1
