@@ -8,6 +8,7 @@ import json
 from os import makedirs
 from os.path import exists
 from abc import ABC, abstractmethod
+from multiprocessing import Process, Queue
 
 
 class AbstractTestScaffold(ABC):
@@ -21,31 +22,41 @@ class AbstractTestScaffold(ABC):
     def run_test_case(self, test_case, environment):
         """Run the test case end-to-end; return a number encoding the points allocated."""
 
-
-def run_test(scaffold, test_case):
+def run_test(scaffold, test_case, result_queue: Queue):
     """Ran a single test case with the scaffold; returns score."""
     environment = scaffold.setup(test_case)
     try:
-        return scaffold.run_test_case(test_case, environment)
+        result = scaffold.run_test_case(test_case, environment)
+        result_queue.put(result)
     except Exception as exception:  # pylint: disable=broad-except
         print(f"Exception during test: {exception}")
-        return 0
+        result_queue.put(0)
 
+def run_test_in_process(interpreter, test_case, timeout: int):
+    result_queue = Queue()
+    p = Process(target=run_test, args=(interpreter, test_case, result_queue))
+    p.start()
+    p.join(timeout)  # wait for the process for 'timeout' seconds
+    if p.is_alive():
+        p.terminate()  # forcefully terminate the process
+        p.join()
+        return None
+    if not result_queue.empty():
+        return result_queue.get()
+    return 0
 
-async def run_test_wrapper(interpreter, test_case, timeout):
-    """
-    Wrapper for run_test with timeout and minor debugging.
-    Uses asyncio to enforce timeout, not for concurrency.
-    """
+async def run_test_wrapper(interpreter, test_case, timeout: int):
     print(f'Running {test_case["srcfile"]}... ', end="")
-    try:
-        async with asyncio.timeout(timeout):
-            result = await asyncio.to_thread(run_test, interpreter, test_case)
-            print(f' {"PASSED" if result else "FAILED"}')
-            return result
-    except asyncio.TimeoutError:
-        print("TIMED OUT")
-        return 0
+    match await asyncio.to_thread(run_test_in_process, interpreter, test_case, timeout):
+        case None:
+            print("TIMED OUT")
+            return 0
+        case 1:
+            print("PASSED")
+            return 1
+        case _:
+            print("FAILED")
+            return 0
 
 
 async def run_all_tests(interpreter, tests, timeout_per_test=5, zero_credit=False):
