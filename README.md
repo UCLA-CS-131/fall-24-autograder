@@ -32,6 +32,50 @@ We've made a [separate repository for project template code](https://github.com/
 
 Now, you're ready to test locally.
 
+
+### Adding Test Cases
+
+We only supply a limited number of test cases here, so it's important to write your own!
+
+To do so, create a file in the following format:
+
+```
+[BREWIN PROGRAM HERE]
+
+/*
+*IN*
+[DESIRED INPUT FOR PROGRAM]
+*IN*
+*OUT*
+[DESIRED OUTPUT FOR PROGRAM]
+*OUT*
+*/
+```
+
+Here's an example!
+```
+func main() {
+  var a;
+  a = inputi("Enter a value: ");
+  print(a);  
+}
+
+/*
+*IN*
+10
+*IN*
+*OUT*
+Enter a value: 
+10
+*OUT*
+*/
+```
+In the test above, we supply a Brewin program that takes input from the user and prints it. We add 10 to the input section and 10 the output section, since the program prints whatever is given as input.
+
+Now add this new test file to test folder for the current project you're working on. If the test you're adding results in an error, add it to `/fails`. Otherwise add it to `/tests`.
+
+For example, if you're working on a test for Project 1 that does not have any errors, add the file to `v1/tests`. 
+
 ### Testing Locally
 
 To test locally, you will additionally need a **working implementation** of the project version you're trying to test (your interpreter file and any additional files that you created that it relies on)
