@@ -72,7 +72,7 @@ Enter a value:
 ```
 In the test above, we supply a Brewin program that takes input from the user and prints it. We add 10 to the input section and 10 the output section, since the program prints whatever is given as input.
 
-Now add this new test file to test folder for the current project you're working on. If the test you're adding results in an error, add it to `/fails`. Otherwise add it to `/tests`.
+Now add this new test file to the test folder for the current project you're working on. If the test you're adding results in an error, add it to `/fails`. Otherwise, add it to `/tests`.
 
 For example, if you're working on a test for Project 1 that does not have any errors, add the file to `v1/tests`. 
 
